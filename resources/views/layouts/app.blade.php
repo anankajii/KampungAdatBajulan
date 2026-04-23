@@ -6,6 +6,7 @@
     <meta name="description" content="Kampung Adat Bajulan – Wisata budaya, alam, dan tradisi di kaki Gunung Wilis, Jawa Timur.">
     <title>@yield('title', 'Kampung Adat Bajulan')</title>
 
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
