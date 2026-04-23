@@ -2,9 +2,7 @@
 
 @section('title', 'Kampung Adat Bajulan – Wisata Budaya, Alam & Tradisi')
 
-@section('styles')
 
-@endsection
 
 @section('content')
 
