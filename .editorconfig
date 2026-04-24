@@ -1,18 +1,21 @@
-root = true
+FROM php:8.2-cli
 
-[*]
-charset = utf-8
-end_of_line = lf
-indent_size = 4
-indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true
+# Install dependencies + MySQL driver
+RUN apt-get update && apt-get install -y \
+    unzip git curl libzip-dev zip \
+    && docker-php-ext-install pdo pdo_mysql
 
-[*.md]
-trim_trailing_whitespace = false
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-[*.{yml,yaml}]
-indent_size = 2
+WORKDIR /app
 
-[compose.yaml]
-indent_size = 4
+COPY . .
+
+RUN composer install --no-dev --optimize-autoloader
+
+RUN chmod -R 775 storage bootstrap/cache
+
+EXPOSE 10000
+
+CMD php artisan serve --host=0.0.0.0 --port=10000
