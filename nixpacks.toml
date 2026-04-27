@@ -1,10 +1,21 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.pdo_mysql", "php82Packages.composer"]
+nixPkgs = [
+  "php82",
+  "php82Extensions.pdo_mysql",
+  "php82Packages.composer",
+  "nodejs"
+]
 
 [phases.install]
 cmds = [
   "composer install --no-dev --optimize-autoloader",
+  "npm install",
   "chmod -R 775 storage bootstrap/cache"
+]
+
+[phases.build]
+cmds = [
+  "npm run build"
 ]
 
 [start]
