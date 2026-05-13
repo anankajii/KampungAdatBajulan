@@ -20,8 +20,8 @@
                     <div class="booking-feature"><i class="bi bi-check-circle-fill" style="color:var(--green-light)"></i> Harga Terjangkau</div>
                 </div>
                 <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                    <a href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+booking+wisata+Kampung+Adat+Bajulan"
-                       class="btn-cta-book text-decoration-none" target="_blank">
+                    <a href="{{ route('packages') }}"
+                       class="btn-cta-book text-decoration-none">
                         <i class="bi bi-calendar-check me-2"></i>Book Visit Sekarang
                     </a>
                     <a href="#contact" class="btn-cta-outline text-decoration-none">

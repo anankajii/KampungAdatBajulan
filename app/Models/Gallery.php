@@ -25,7 +25,7 @@ class Gallery extends Model
     public function getFullUrlAttribute()
     {
         if ($this->image_path) {
-            return Storage::disk('public')->url($this->image_path);
+            return rtrim(config('app.url'), '/') . '/uploads/' . ltrim($this->image_path, '/');
         }
         return null;
     }

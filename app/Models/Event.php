@@ -38,7 +38,8 @@ class Event extends Model
     public function getFullUrlAttribute()
     {
         if ($this->image_path) {
-            return Storage::disk('public')->url($this->image_path);
+            // Kembalikan URL absolut agar bisa diakses dari mobile
+            return rtrim(config('app.url'), '/') . '/uploads/' . ltrim($this->image_path, '/');
         }
         return null;
     }

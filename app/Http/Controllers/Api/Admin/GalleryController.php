@@ -32,7 +32,7 @@ class GalleryController extends Controller
 
         $gallery = new Gallery($request->except('image'));
 
-        $path = $request->file('image')->store('galleries', 'public');
+        $path = $request->file('image')->store('galleries', 'uploads');
         $gallery->image_path = $path;
         $gallery->save();
 
@@ -47,7 +47,7 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
         if ($gallery->image_path) {
-            Storage::disk('public')->delete($gallery->image_path);
+            Storage::disk('uploads')->delete($gallery->image_path);
         }
         $gallery->delete();
 

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class PackageImage extends Model
 {
@@ -27,7 +26,12 @@ class PackageImage extends Model
     public function getFullUrlAttribute()
     {
         if ($this->image_path) {
-            return Storage::disk('public')->url($this->image_path);
+            // Cek apakah path sudah berupa URL lengkap
+            if (str_starts_with($this->image_path, 'http')) {
+                return $this->image_path;
+            }
+            // Gunakan disk uploads (public_html/uploads/) agar tidak perlu symlink
+            return rtrim(config('app.url'), '/') . '/uploads/' . ltrim($this->image_path, '/');
         }
         return null;
     }

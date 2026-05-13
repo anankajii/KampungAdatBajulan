@@ -6,8 +6,8 @@
         </div>
         <h1 class="hero-title">Sugeng Rawuh</h1>
         <p class="hero-subtitle">
-            Experience the timeless magic of nature, arts &amp; living traditions of<br>
-            Kampung Adat Bajulan, at the foot of Mount Wilis.
+            Rasakan keajaiban alam, seni, dan tradisi yang tak lekang oleh waktu di<br>
+            Kampung Adat Bajulan, di kaki Gunung Wilis.
         </p>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-5">
             <a href="{{ route('packages') }}" class="btn-hero-primary">

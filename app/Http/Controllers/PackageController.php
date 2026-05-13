@@ -13,12 +13,12 @@ class PackageController extends Controller
     private function categoryMeta(string $category): array
     {
         return match ($category) {
-            'kampung_adat'  => ['tag' => 'Culture',   'tag_label' => 'Cultural Immersion', 'tag_color' => '#c8860a'],
-            'budaya_seni'   => ['tag' => 'Culture',   'tag_label' => 'Budaya & Seni',       'tag_color' => '#1e3a1e'],
-            'edukasi_durian'=> ['tag' => 'Culinary',  'tag_label' => 'Culinary',            'tag_color' => '#c8860a'],
-            'pendakian'     => ['tag' => 'Nature',    'tag_label' => 'Nature',              'tag_color' => '#2d5a27'],
-            'trabas'        => ['tag' => 'Adventure', 'tag_label' => 'Adventure',           'tag_color' => '#5a2d27'],
-            default         => ['tag' => 'Wisata',    'tag_label' => 'Wisata',              'tag_color' => '#888'],
+            'kampung_adat'  => ['tag' => 'Budaya',      'tag_label' => 'Budaya',      'tag_color' => '#c8860a'],
+            'budaya_seni'   => ['tag' => 'Ritual',      'tag_label' => 'Ritual',      'tag_color' => '#1e3a1e'],
+            'edukasi_durian'=> ['tag' => 'Kuliner',     'tag_label' => 'Kuliner',     'tag_color' => '#c8860a'],
+            'pendakian'     => ['tag' => 'Alam',        'tag_label' => 'Alam',        'tag_color' => '#2d5a27'],
+            'trabas'        => ['tag' => 'Petualangan', 'tag_label' => 'Petualangan', 'tag_color' => '#5a2d27'],
+            default         => ['tag' => 'Wisata',      'tag_label' => 'Wisata',      'tag_color' => '#888'],
         };
     }
 
@@ -68,15 +68,32 @@ class PackageController extends Controller
 
     public function index(Request $request)
     {
-        $packages = Package::with('images')
+        $activeTag = $request->query('tag'); // e.g. "Budaya", "Alam", dll
+
+        // Mapping tag label → category key di DB
+        $tagToCategory = [
+            'Budaya'      => 'kampung_adat',
+            'Ritual'      => 'budaya_seni',
+            'Kuliner'     => 'edukasi_durian',
+            'Alam'        => 'pendakian',
+            'Petualangan' => 'trabas',
+        ];
+
+        $query = Package::with('images')
             ->where('status', 'active')
             ->orderBy('sort_order')
-            ->orderBy('id')
-            ->get()
+            ->orderBy('id');
+
+        // Filter berdasarkan kategori jika tag dipilih
+        if ($activeTag && isset($tagToCategory[$activeTag])) {
+            $query->where('category', $tagToCategory[$activeTag]);
+        }
+
+        $packages = $query->get()
             ->map(fn($pkg) => $this->buildPackageArray($pkg))
             ->toArray();
 
-        return view('packages.index', compact('packages'));
+        return view('packages.index', compact('packages', 'activeTag'));
     }
 
     public function show($id)

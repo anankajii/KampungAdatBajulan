@@ -37,7 +37,7 @@ class EventController extends Controller
         $event = new Event($request->except('image'));
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('events', 'public');
+            $path = $request->file('image')->store('events', 'uploads');
             $event->image_path = $path;
         }
 
@@ -81,9 +81,9 @@ class EventController extends Controller
 
         if ($request->hasFile('image')) {
             if ($event->image_path) {
-                Storage::disk('public')->delete($event->image_path);
+                Storage::disk('uploads')->delete($event->image_path);
             }
-            $path = $request->file('image')->store('events', 'public');
+            $path = $request->file('image')->store('events', 'uploads');
             $event->image_path = $path;
         }
 
@@ -100,7 +100,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         if ($event->image_path) {
-            Storage::disk('public')->delete($event->image_path);
+            Storage::disk('uploads')->delete($event->image_path);
         }
         $event->delete();
 

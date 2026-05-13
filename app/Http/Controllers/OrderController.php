@@ -36,7 +36,7 @@ class OrderController extends Controller
             'package_id'   => 'required|exists:packages,id',
             'name'         => 'required|string|max:255',
             'whatsapp'     => 'required|string|max:20',
-            'date'         => 'required|date|after_or_equal:today',
+            'date'         => 'required|date',
             'people'       => 'required|integer|min:1|max:100',
         ]);
 
@@ -53,14 +53,14 @@ class OrderController extends Controller
             $totalPrice = $pkg->price_per_person * $request->people;
 
             $booking = Booking::create([
-                'package_id'      => $pkg->id,
-                'guest_name'      => $request->name,
-                'guest_phone'     => $request->whatsapp,
-                'visit_date'      => $request->date,
-                'total_person'    => $request->people,
-                'price_per_person'=> $pkg->price_per_person,
-                'total_price'     => $totalPrice,
-                'status'          => 'pending',
+                'package_id'       => $pkg->id,
+                'guest_name'       => $request->name,
+                'guest_phone'      => $request->whatsapp,
+                'visit_date'       => $request->date,
+                'total_person'     => $request->people,
+                'price_per_person' => $pkg->price_per_person,
+                'total_price'      => $totalPrice,
+                'status'           => 'pending',
             ]);
 
             $snapToken = $this->midtransService->createTransaction($booking);

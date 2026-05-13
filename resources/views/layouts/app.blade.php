@@ -33,12 +33,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#events') }}">Events</a></li>
-                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('packages') ? 'active' : '' }}" href="{{ route('packages') }}">Packages</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#gallery') }}">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/#contact') }}">Homestay</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/#events') }}">Acara</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('packages') ? 'active' : '' }}" href="{{ route('packages') }}">Paket Wisata</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/#gallery') }}">Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('homestay') ? 'active' : '' }}" href="{{ route('homestay') }}">Homestay</a></li>
                     <li class="nav-item ms-lg-2">
-                        <a class="nav-link btn-book" href="#booking">Book Now</a>
+                        <a class="nav-link btn-book" style="color:#fff !important" href="{{ route('packages') }}">Pesan Sekarang</a>
                     </li>
                 </ul>
             </div>
@@ -69,17 +69,17 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6">
-                    <p class="footer-heading">Explore</p>
+                    <p class="footer-heading">Jelajahi</p>
                     <ul class="list-unstyled" style="font-size:0.88rem">
-                        <li class="mb-2"><a href="#home">Home</a></li>
-                        <li class="mb-2"><a href="#about">About</a></li>
-                        <li class="mb-2"><a href="#tourism">Packages</a></li>
-                        <li class="mb-2"><a href="#events">Events</a></li>
-                        <li class="mb-2"><a href="#gallery">Gallery</a></li>
+                        <li class="mb-2"><a href="#home">Beranda</a></li>
+                        <li class="mb-2"><a href="#about">Tentang</a></li>
+                        <li class="mb-2"><a href="#tourism">Paket Wisata</a></li>
+                        <li class="mb-2"><a href="#events">Acara</a></li>
+                        <li class="mb-2"><a href="#gallery">Galeri</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-3 col-6">
-                    <p class="footer-heading">Cultural Tradition</p>
+                    <p class="footer-heading">Tradisi Budaya</p>
                     <ul class="list-unstyled" style="font-size:0.88rem">
                         <li class="mb-2"><a href="#tourism">Kampung Adat</a></li>
                         <li class="mb-2"><a href="#tourism">Budaya & Seni</a></li>
@@ -107,8 +107,27 @@
                 </div>
             </div>
             <hr style="border-color:rgba(255,255,255,0.12);margin-top:2.5rem">
-            <p class="text-center mb-0" style="font-size:0.8rem;color:rgba(255,255,255,0.45)">
-                &copy; {{ date('Y') }} Kampung Adat Bajulan. All rights reserved.
+
+            {{-- Logo Partner --}}
+            <div class="d-flex flex-wrap align-items-center justify-content-center gap-4 py-3">
+                <p class="mb-0 me-2" style="font-size:0.75rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em">
+                    Didukung oleh
+                </p>
+                <img src="{{ asset('images/dispora.png') }}"
+                     alt="Dinas Pemuda dan Olahraga"
+                     style="height:72px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.7;transition:opacity 0.2s"
+                     onmouseover="this.style.opacity='1'"
+                     onmouseout="this.style.opacity='0.7'">
+                <img src="{{ asset('images/polije.png') }}"
+                     alt="Politeknik Negeri Jember"
+                     style="height:72px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.7;transition:opacity 0.2s"
+                     onmouseover="this.style.opacity='1'"
+                     onmouseout="this.style.opacity='0.7'">
+            </div>
+
+            <hr style="border-color:rgba(255,255,255,0.12);margin:0">
+            <p class="text-center mb-0 pt-3" style="font-size:0.8rem;color:rgba(255,255,255,0.45)">
+                &copy; {{ date('Y') }} Kampung Adat Bajulan. Hak cipta dilindungi.
             </p>
         </div>
     </footer>
@@ -116,7 +135,7 @@
     <!-- ══ WHATSAPP FLOAT ══ -->
     <a href="https://wa.me/6281234567890?text=Halo%2C+saya+ingin+info+wisata+Kampung+Adat+Bajulan" class="whatsapp-float" target="_blank" aria-label="Chat WhatsApp">
         <i class="bi bi-whatsapp"></i>
-        <span class="wa-tooltip">Chat with us!</span>
+        <span class="wa-tooltip">Chat dengan kami!</span>
     </a>
 
     <!-- Bootstrap JS -->
@@ -124,8 +143,15 @@
 
     <script>
         const nav = document.getElementById('mainNav');
+        // Halaman non-landing: langsung pakai style scrolled (teks gelap)
+        const isLanding = document.getElementById('home') !== null;
+        if (!isLanding) {
+            nav.classList.add('scrolled');
+        }
         window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.scrollY > 60);
+            if (isLanding) {
+                nav.classList.toggle('scrolled', window.scrollY > 60);
+            }
         });
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {

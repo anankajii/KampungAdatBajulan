@@ -15,7 +15,7 @@ class PackageImageController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $path = $request->file('image')->store('packages', 'public');
+        $path = $request->file('image')->store('packages', 'uploads');
 
         $packageImage = PackageImage::create([
             'package_id' => $packageId,
@@ -34,7 +34,7 @@ class PackageImageController extends Controller
     {
         $packageImage = PackageImage::findOrFail($id);
         
-        Storage::disk('public')->delete($packageImage->image_path);
+        Storage::disk('uploads')->delete($packageImage->image_path);
         $packageImage->delete();
 
         return response()->json([

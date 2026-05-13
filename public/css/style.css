@@ -24,32 +24,44 @@ h1, h2, h3, h4, h5, .brand-font {
 
 /* ── NAVBAR ── */
 #mainNav {
-    background: rgba(245,240,230,0.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0,0,0,0.06);
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid transparent;
     padding: 0.9rem 0;
     transition: all 0.3s ease;
 }
 #mainNav.scrolled {
     background: rgba(245,240,230,0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 #mainNav .navbar-brand {
     font-family: 'Playfair Display', serif;
     font-size: 1.3rem;
-    color: var(--green-dark) !important;
+    color: #fff !important;
     font-weight: 700;
+    transition: color 0.3s;
+}
+#mainNav.scrolled .navbar-brand {
+    color: var(--green-dark) !important;
 }
 #mainNav .nav-link {
-    color: var(--text-dark) !important;
+    color: rgba(255,255,255,0.92) !important;
     font-size: 0.9rem;
     font-weight: 500;
     padding: 0.4rem 0.9rem !important;
     transition: color 0.2s;
 }
+#mainNav.scrolled .nav-link {
+    color: var(--text-dark) !important;
+}
 #mainNav .nav-link:hover,
 #mainNav .nav-link.active { color: var(--green-mid) !important; }
+#mainNav.scrolled .nav-link:hover,
+#mainNav.scrolled .nav-link.active { color: var(--green-mid) !important; }
 
 .btn-book {
     background: var(--green-dark);
@@ -60,7 +72,9 @@ h1, h2, h3, h4, h5, .brand-font {
     font-weight: 600;
     transition: background 0.2s, transform 0.15s;
 }
-.btn-book:hover { background: var(--green-mid); transform: translateY(-1px); }
+.btn-book:hover { background: var(--green-mid); transform: translateY(-1px); color: #fff !important; }
+.nav-link.btn-book { color: #fff !important; }
+.nav-link.btn-book:hover { color: #fff !important; }
 
 /* ── SECTION HELPERS ── */
 .section-label {

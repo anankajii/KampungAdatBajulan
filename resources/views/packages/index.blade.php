@@ -197,17 +197,24 @@
 {{-- HERO --}}
 <div class="pkg-hero">
     <div class="container">
-        <span class="pkg-badge"><i class="bi bi-stars me-1"></i> Village Experiences</span>
-        <h1>Authentic Journeys into<br>Javanese Heritage</h1>
-        <p>Discover the soul of Kampung Adat Bajulan through our curated experiences, designed to immerse you in centuries-old traditions and pristine nature.</p>
+        <span class="pkg-badge"><i class="bi bi-stars me-1"></i> Pengalaman Desa</span>
+        <h1>Perjalanan Autentik ke<br>Warisan Budaya Jawa</h1>
+        <p>Temukan jiwa Kampung Adat Bajulan melalui pengalaman pilihan kami, dirancang untuk menyelami tradisi berabad-abad dan keindahan alam yang asri.</p>
 
         {{-- Filter Tabs --}}
         <div class="filter-tabs">
-            <a href="{{ route('packages') }}" class="filter-tab active">All Packages</a>
-            <a href="{{ route('packages', ['tag' => 'Culture']) }}" class="filter-tab">Culture</a>
-            <a href="{{ route('packages', ['tag' => 'Nature']) }}" class="filter-tab">Nature</a>
-            <a href="{{ route('packages', ['tag' => 'Ritual']) }}" class="filter-tab">Ritual</a>
-            <a href="{{ route('packages', ['tag' => 'Culinary']) }}" class="filter-tab">Culinary</a>
+            <a href="{{ route('packages') }}"
+               class="filter-tab {{ !$activeTag ? 'active' : '' }}">Semua Paket</a>
+            <a href="{{ route('packages', ['tag' => 'Budaya']) }}"
+               class="filter-tab {{ $activeTag === 'Budaya' ? 'active' : '' }}">Budaya</a>
+            <a href="{{ route('packages', ['tag' => 'Alam']) }}"
+               class="filter-tab {{ $activeTag === 'Alam' ? 'active' : '' }}">Alam</a>
+            <a href="{{ route('packages', ['tag' => 'Ritual']) }}"
+               class="filter-tab {{ $activeTag === 'Ritual' ? 'active' : '' }}">Ritual</a>
+            <a href="{{ route('packages', ['tag' => 'Kuliner']) }}"
+               class="filter-tab {{ $activeTag === 'Kuliner' ? 'active' : '' }}">Kuliner</a>
+            <a href="{{ route('packages', ['tag' => 'Petualangan']) }}"
+               class="filter-tab {{ $activeTag === 'Petualangan' ? 'active' : '' }}">Petualangan</a>
         </div>
     </div>
 </div>
@@ -233,7 +240,7 @@
                             <span><i class="bi bi-clock"></i> {{ $pkg['duration'] }}</span>
                             <span><i class="bi bi-people"></i> {{ $pkg['group'] ?? '' }}</span>
                         </div>
-                        <a href="{{ route('packages.show', $pkg['id']) }}" class="btn-view">View Details</a>
+                        <a href="{{ route('packages.show', $pkg['id']) }}" class="btn-view">Lihat Detail</a>
                     </div>
                 </div>
             </div>
@@ -243,13 +250,13 @@
         {{-- CTA Banner --}}
         <div class="pkg-cta mt-5 fade-up">
             <div>
-                <h3>Want a custom experience?</h3>
-                <p>Our village elders can tailor a journey specifically for your interests and group size.</p>
+                <h3>Ingin pengalaman yang disesuaikan?</h3>
+                <p>Sesepuh desa kami dapat merancang perjalanan khusus sesuai minat dan jumlah rombongan Anda.</p>
             </div>
             <div class="d-flex flex-wrap gap-3">
-                <a href="#contact" class="btn-enquire">Enquire Now</a>
+                <a href="{{ url('/#contact') }}" class="btn-enquire">Hubungi Kami</a>
                 <a href="#" class="btn-download">
-                    <i class="bi bi-download me-1"></i>Download Brochure
+                    <i class="bi bi-download me-1"></i>Unduh Brosur
                 </a>
             </div>
         </div>
@@ -273,15 +280,5 @@ requestAnimationFrame(() => {
     }, { threshold: 0.10 });
     fadeEls.forEach(el => io.observe(el));
 });
-
-// Filter tab active state from URL
-const params = new URLSearchParams(window.location.search);
-const activeTag = params.get('tag');
-if (activeTag) {
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.textContent.trim() === activeTag) tab.classList.add('active');
-    });
-}
 </script>
 @endsection

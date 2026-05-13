@@ -23,7 +23,7 @@ Route::get('/events', [EventController::class, 'index']);
 Route::get('/galleries', [GalleryController::class, 'index']);
 Route::post('/bookings', [BookingController::class, 'store']);
 Route::get('/bookings/{code}', [BookingController::class, 'show']);
-Route::post('/midtrans/callback', [MidtransController::class, 'callback']);
+Route::post('/midtrans/callback', [MidtransController::class, 'callback'])->middleware('throttle:30,1');
 
 // ADMIN AUTH
 Route::post('/auth/login', [AuthController::class, 'login']);

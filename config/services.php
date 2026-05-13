@@ -42,4 +42,9 @@ return [
         'snap_url'      => env('MIDTRANS_SNAP_URL', 'https://app.sandbox.midtrans.com/snap/v1/transactions'),
     ],
 
+    'fonnte' => [
+        'token' => env('FONNTE_TOKEN'),
+        'url'   => env('FONNTE_URL', 'https://api.fonnte.com/send'),
+    ],
+
 ];

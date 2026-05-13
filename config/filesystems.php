@@ -47,6 +47,16 @@ return [
             'report' => false,
         ],
 
+        // Disk khusus Hostinger — simpan langsung ke public_html/uploads
+        // agar bisa diakses tanpa symlink
+        'uploads' => [
+            'driver' => 'local',
+            'root' => env('UPLOADS_PATH', public_path('uploads')),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/uploads',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

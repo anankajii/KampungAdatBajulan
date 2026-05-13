@@ -16,7 +16,7 @@ class PackageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Berhasil mengambil semua paket',
-            'data' => $packages,
+            'data' => $packages,QQQQQQQQQQQQQQQQQQQQ
         ]);
     }
 
@@ -35,7 +35,7 @@ class PackageController extends Controller
         $package = Package::create($request->except('cover_image'));
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('packages', 'public');
+            $path = $request->file('cover_image')->store('packages', 'uploads');
             $package->images()->create([
                 'image_path' => $path,
                 'is_cover' => true,
@@ -77,12 +77,12 @@ class PackageController extends Controller
         $package->update($request->except('cover_image'));
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('packages', 'public');
-            
-            // Remove old cover
+            $path = $request->file('cover_image')->store('packages', 'uploads');
+
+            // Hapus cover lama
             $oldCover = $package->images()->where('is_cover', true)->first();
             if ($oldCover) {
-                Storage::disk('public')->delete($oldCover->image_path);
+                Storage::disk('uploads')->delete($oldCover->image_path);
                 $oldCover->delete();
             }
 
@@ -101,8 +101,15 @@ class PackageController extends Controller
 
     public function destroy($id)
     {
-        $package = Package::findOrFail($id);
-        $package->delete();
+        $package = Package::with('images')->findOrFail($id);
+
+        // Hapus semua file gambar dari disk
+        foreach ($package->images as $image) {
+            Storage::disk('uploads')->delete($image->image_path);
+            $image->delete();
+        }
+
+        $package->forceDelete();
 
         return response()->json([
             'success' => true,

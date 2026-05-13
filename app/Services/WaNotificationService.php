@@ -13,8 +13,8 @@ class WaNotificationService
 
     public function __construct()
     {
-        $this->token = env('FONNTE_TOKEN');
-        $this->url = env('FONNTE_URL', 'https://api.fonnte.com/send');
+        $this->token = config('services.fonnte.token');
+        $this->url   = config('services.fonnte.url', 'https://api.fonnte.com/send');
     }
 
     public function sendBookingConfirmation($booking)
@@ -25,11 +25,20 @@ class WaNotificationService
         
         $message = "Halo {$booking->guest_name}, booking Anda berhasil! Kode: {$booking->booking_code}, Paket: {$paketName}, Tanggal: {$tanggal}, Total: Rp{$total}. Terima kasih telah memilih Kampung Adat Bajulan.";
 
+        // Normalisasi nomor: 08xxx → 628xxx, +628xxx → 628xxx
+        $phone = preg_replace('/\D/', '', $booking->guest_phone); // hapus non-digit
+        if (str_starts_with($phone, '0')) {
+            $phone = '62' . substr($phone, 1);
+        } elseif (str_starts_with($phone, '8')) {
+            $phone = '62' . $phone;
+        }
+        // Kalau sudah 62xxx, biarkan apa adanya
+
         $response = Http::withHeaders([
             'Authorization' => $this->token,
         ])->post($this->url, [
-            'target' => $booking->guest_phone,
-            'message' => $message,
+            'target'      => $phone,
+            'message'     => $message,
             'countryCode' => '62',
         ]);
 

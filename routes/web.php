@@ -15,3 +15,8 @@ Route::get('/packages/{id}', [PackageController::class, 'show'])->name('packages
 Route::get('/booking', [OrderController::class, 'create'])->name('orders.create');
 Route::post('/booking', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/booking/status', [OrderController::class, 'status'])->name('orders.status');
+
+// Homestay
+Route::get('/homestay', function () {
+    return view('homestay');
+})->name('homestay');

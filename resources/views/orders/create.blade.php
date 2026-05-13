@@ -166,8 +166,8 @@
 
             {{-- LEFT: Guest Form --}}
             <div class="col-lg-7">
-                <h1 class="booking-title">Guest Information</h1>
-                <p class="booking-subtitle">Please fill in your details to finalize your visit to Kampung Adat Bajulan.</p>
+                <h1 class="booking-title">Informasi Tamu</h1>
+                <p class="booking-subtitle">Isi data Anda untuk menyelesaikan pemesanan kunjungan ke Kampung Adat Bajulan.</p>
 
                 <form action="{{ route('orders.store') }}" method="POST" id="bookingForm">
                     @csrf
@@ -182,11 +182,11 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label-custom">Full Name</label>
+                                <label class="form-label-custom">Nama Lengkap</label>
                                 <div class="input-wrap">
                                     <i class="bi bi-person input-icon"></i>
                                     <input type="text" name="name" class="form-control-custom"
-                                           placeholder="e.g. Budi Santoso"
+                                           placeholder="cth. Budi Santoso"
                                            value="{{ old('name') }}" required>
                                 </div>
                                 @error('name')<p style="color:red;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>@enderror
@@ -194,7 +194,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label-custom">WhatsApp Number</label>
+                                <label class="form-label-custom">Nomor WhatsApp</label>
                                 <div class="input-wrap">
                                     <i class="bi bi-whatsapp input-icon"></i>
                                     <input type="tel" name="whatsapp" class="form-control-custom"
@@ -206,11 +206,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label-custom">Visit Date</label>
+                                <label class="form-label-custom">Tanggal Kunjungan</label>
                                 <div class="input-wrap">
                                     <i class="bi bi-calendar3 input-icon"></i>
                                     <input type="date" name="date" class="form-control-custom"
-                                           min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                                           min="{{ date('Y-m-d') }}"
                                            value="{{ request('date') ?? old('date') }}" required>
                                 </div>
                                 @error('date')<p style="color:red;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>@enderror
@@ -218,14 +218,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label-custom">Number of People</label>
+                                <label class="form-label-custom">Jumlah Orang</label>
                                 <div class="input-wrap select-wrap">
                                     <i class="bi bi-people input-icon"></i>
                                     <select name="people" class="form-control-custom" required>
-                                        <option value="">-- Select --</option>
+                                        <option value="">-- Pilih --</option>
                                         @for($i = 1; $i <= 10; $i++)
                                         <option value="{{ $i }}" {{ old('people') == $i ? 'selected' : '' }}>
-                                            {{ $i }} {{ $i === 1 ? 'Person' : 'People' }}
+                                            {{ $i }} Orang
                                         </option>
                                         @endfor
                                     </select>
@@ -239,8 +239,8 @@
                     <div class="note-box">
                         <i class="bi bi-info-circle-fill"></i>
                         <div>
-                            <strong>Important Note</strong>
-                            <p>Please arrive at the village gate at least 15 minutes before your scheduled tour time. Wear comfortable walking shoes and modest clothing.</p>
+                            <strong>Catatan Penting</strong>
+                            <p>Harap tiba di gerbang desa minimal 15 menit sebelum jadwal tur. Kenakan alas kaki yang nyaman dan pakaian yang sopan.</p>
                         </div>
                     </div>
                 </form>
@@ -254,24 +254,24 @@
                         <span class="summary-img-label">{{ $package['title'] }}</span>
                     </div>
                     <div class="summary-body">
-                        <h5>Order Summary</h5>
+                        <h5>Ringkasan Pesanan</h5>
 
                         <div class="summary-row">
-                            <span>Ticket (Adult) x 2</span>
-                            <span>Rp {{ number_format($package['price'] * 2, 0, ',', '.') }}</span>
+                            <span>Harga per orang</span>
+                            <span>Rp {{ number_format($package['price'], 0, ',', '.') }}</span>
                         </div>
                         <div class="summary-row">
-                            <span>Local Guide Service</span>
-                            <span style="color:var(--green-mid);font-weight:600">Included</span>
+                            <span id="ticket-label">Jumlah orang</span>
+                            <span id="ticket-count">—</span>
                         </div>
                         <div class="summary-row">
-                            <span>Processing Fee</span>
-                            <span>Rp 5.000</span>
+                            <span>Min. pemesanan</span>
+                            <span>{{ $package['min_person'] }} orang</span>
                         </div>
 
                         <div class="summary-row total">
                             <span class="label">Total Price</span>
-                            <span class="amount">Rp {{ number_format($package['price'] * 2 + 5000, 0, ',', '.') }}</span>
+                            <span class="amount" id="total-price">—</span>
                         </div>
 
                         <button type="submit" form="bookingForm" class="btn-checkout">
@@ -279,7 +279,7 @@
                         </button>
                         <p class="secure-text">
                             <i class="bi bi-shield-lock-fill me-1"></i>
-                            Secure 256-bit SSL Encrypted Payment
+                            Pembayaran terenkripsi SSL 256-bit yang aman
                         </p>
                     </div>
                 </div>
@@ -288,4 +288,33 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+<script>
+const pricePerPerson = {{ $package['price'] }};
+const minPerson = {{ $package['min_person'] }};
+
+function formatRupiah(num) {
+    return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function updateSummary() {
+    const people = parseInt(document.querySelector('select[name="people"]').value) || 0;
+
+    if (people > 0) {
+        const total = pricePerPerson * people;
+        document.getElementById('ticket-label').textContent = 'Ticket x ' + people + ' orang';
+        document.getElementById('ticket-count').textContent = formatRupiah(total);
+        document.getElementById('total-price').textContent = formatRupiah(total);
+    } else {
+        document.getElementById('ticket-label').textContent = 'Jumlah orang';
+        document.getElementById('ticket-count').textContent = '—';
+        document.getElementById('total-price').textContent = '—';
+    }
+}
+
+document.querySelector('select[name="people"]').addEventListener('change', updateSummary);
+updateSummary();
+</script>
 @endsection

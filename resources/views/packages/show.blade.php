@@ -199,61 +199,62 @@
                         </p>
                     </div>
                     <div class="pkg-starting">
-                        <span>Starting From</span>
+                        <span>Mulai Dari</span>
                         <strong>{{ $package['price_label'] }}</strong>
-                        <small>/pax</small>
+                        <small>/orang</small>
                     </div>
                 </div>
 
                 {{-- Description --}}
                 <div class="pkg-desc">
-                    <p class="section-label mb-2">Description</p>
+                    <p class="section-label mb-2">Deskripsi</p>
                     <p>{{ $package['desc'] }}</p>
-                    <p>{{ $package['desc2'] }}</p>
+                    <!-- <p>{{ $package['desc2'] }}</p> -->
                 </div>
 
                 {{-- Info Boxes --}}
                 <div class="info-boxes">
                     <div class="info-box">
-                        <i class="bi bi-clock"></i>
-                        <div class="ib-label">Duration</div>
-                        <div class="ib-val">{{ $package['duration'] }}</div>
-                    </div>
-                    <div class="info-box">
                         <i class="bi bi-people"></i>
-                        <div class="ib-label">Group Size</div>
+                        <div class="ib-label">Ukuran Grup</div>
                         <div class="ib-val">{{ $package['group'] }}</div>
                     </div>
                     <div class="info-box">
-                        <i class="bi bi-translate"></i>
-                        <div class="ib-label">Language</div>
-                        <div class="ib-val">{{ $package['language'] }}</div>
+                        <i class="bi bi-cash-coin"></i>
+                        <div class="ib-label">Harga per Orang</div>
+                        <div class="ib-val">{{ $package['price_label'] }}</div>
+                    </div>
+                    <div class="info-box">
+                        <i class="bi bi-tag"></i>
+                        <div class="ib-label">Kategori</div>
+                        <div class="ib-val">
+                            @php
+                                $catLabels = [
+                                    'kampung_adat'   => 'Budaya',
+                                    'budaya_seni'    => 'Ritual',
+                                    'edukasi_durian' => 'Kuliner',
+                                    'pendakian'      => 'Alam',
+                                    'trabas'         => 'Petualangan',
+                                ];
+                            @endphp
+                            {{ $catLabels[$package['category']] ?? ucfirst(str_replace('_', ' ', $package['category'])) }}
+                        </div>
                     </div>
                 </div>
 
-                {{-- What's Included --}}
-                <p class="includes-heading">What's Included</p>
-                <div class="includes-grid">
-                    @foreach($package['includes'] as $item)
-                    <div class="include-item">
-                        <i class="bi bi-check-circle-fill"></i>
-                        {{ $item }}
-                    </div>
-                    @endforeach
-                </div>
+                {{-- Syarat & Ketentuan --}}
+                @if(!empty($package['desc2']))
+                <p class="includes-heading">Syarat & Ketentuan</p>
+                <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8">{{ $package['desc2'] }}</p>
+                @endif
 
-                {{-- Photos --}}
-                <div class="photo-row">
-                    <img src="{{ $package['img2'] }}" alt="Photo 1" loading="lazy">
-                    <img src="{{ $package['img3'] }}" alt="Photo 2" loading="lazy">
-                </div>
             </div>
 
             {{-- RIGHT: Sidebar --}}
             <div class="col-lg-5">
                 <div class="pkg-sidebar">
                     <div class="sidebar-card">
-                        <h5>Requirements</h5>
+                        <h5>Persyaratan</h5>
                         @foreach($package['requirements'] as $req)
                         <div class="req-item">
                             <i class="bi bi-info-circle-fill"></i>
@@ -261,10 +262,10 @@
                         </div>
                         @endforeach
 
-                        <p class="date-label">Select Date</p>
+                        <p class="date-label">Pilih Tanggal</p>
                         <input type="date" class="date-input" id="preferredDate"
                                min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                               placeholder="Choose a preferred date">
+                               placeholder="Pilih tanggal kunjungan">
 
                         <a href="{{ route('orders.create', ['package' => $package['id']]) }}" class="btn-book-now">
                             Beli Paket Sekarang <i class="bi bi-arrow-right ms-1"></i>
@@ -272,17 +273,17 @@
 
                         <p class="sidebar-secure">
                             <i class="bi bi-shield-lock-fill me-1" style="color:var(--green-mid)"></i>
-                            Secure payment via Internet & Digital Wallets. Free cancellation up to 48 hours before arrival.
+                            Pembayaran aman melalui Internet & Dompet Digital. Pembatalan gratis hingga 48 jam sebelum kedatangan.
                         </p>
 
                         <div class="sidebar-badges">
                             <div class="sidebar-badge">
                                 <i class="bi bi-patch-check-fill"></i>
-                                Verified Heritage
+                                Warisan Terverifikasi
                             </div>
                             <div class="sidebar-badge">
                                 <i class="bi bi-people-fill"></i>
-                                Local Support
+                                Dukungan Lokal
                             </div>
                         </div>
                     </div>
