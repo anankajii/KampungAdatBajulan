@@ -255,7 +255,8 @@
             </div>
             <div class="d-flex flex-wrap gap-3">
                 <a href="{{ url('/#contact') }}" class="btn-enquire">Hubungi Kami</a>
-                <a href="#" class="btn-download">
+                <a href="{{ asset('images/Kampung-Adat-Bajulan-Brochure.png') }}" 
+                   class="btn-download" target="_blank" rel="noopener" download="Brosur-Kampung-Adat-Bajulan.png">
                     <i class="bi bi-download me-1"></i>Unduh Brosur
                 </a>
             </div>

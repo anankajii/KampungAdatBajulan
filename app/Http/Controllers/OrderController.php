@@ -34,9 +34,9 @@ class OrderController extends Controller
     {
         $request->validate([
             'package_id'   => 'required|exists:packages,id',
-            'name'         => 'required|string|max:255',
-            'whatsapp'     => 'required|string|max:20',
-            'date'         => 'required|date',
+            'name'         => ['required', 'string', 'max:255', 'regex:/^[\pL\s\.]+$/u'],
+            'whatsapp'     => ['required', 'regex:/^\+?[0-9]{10,16}$/'],
+            'date'         => 'required|date|after_or_equal:today',
             'people'       => 'required|integer|min:1|max:100',
         ]);
 

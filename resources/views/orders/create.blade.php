@@ -187,7 +187,10 @@
                                     <i class="bi bi-person input-icon"></i>
                                     <input type="text" name="name" class="form-control-custom"
                                            placeholder="cth. Budi Santoso"
-                                           value="{{ old('name') }}" required>
+                                           value="{{ old('name') }}"
+                                           pattern="[A-Za-z\s\.]+"
+                                           title="Nama hanya boleh mengandung huruf, spasi, dan titik."
+                                           required>
                                 </div>
                                 @error('name')<p style="color:red;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>@enderror
                             </div>
@@ -197,10 +200,21 @@
                                 <label class="form-label-custom">Nomor WhatsApp</label>
                                 <div class="input-wrap">
                                     <i class="bi bi-whatsapp input-icon"></i>
-                                    <input type="tel" name="whatsapp" class="form-control-custom"
-                                           placeholder="+62 812..."
-                                           value="{{ old('whatsapp') }}" required>
+                                    <input type="text" name="whatsapp" id="whatsappInput"
+                                           class="form-control-custom"
+                                           placeholder="08123456789 atau +628123456789"
+                                           value="{{ old('whatsapp') }}"
+                                           inputmode="tel"
+                                           pattern="[+]?[0-9]{10,16}"
+                                           minlength="10"
+                                           maxlength="16"
+                                           autocomplete="tel"
+                                           title="Nomor telepon minimal 10 digit. Bisa format 08... atau +62..."
+                                           required>
                                 </div>
+                                <p style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;margin-bottom:0">
+                                    <i class="bi bi-info-circle me-1"></i>Gunakan format <strong>08...</strong> atau <strong>+62...</strong>, minimal 10 digit
+                                </p>
                                 @error('whatsapp')<p style="color:red;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>@enderror
                             </div>
                         </div>
@@ -219,17 +233,19 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label-custom">Jumlah Orang</label>
-                                <div class="input-wrap select-wrap">
+                                <div class="input-wrap">
                                     <i class="bi bi-people input-icon"></i>
-                                    <select name="people" class="form-control-custom" required>
-                                        <option value="">-- Pilih --</option>
-                                        @for($i = 1; $i <= 10; $i++)
-                                        <option value="{{ $i }}" {{ old('people') == $i ? 'selected' : '' }}>
-                                            {{ $i }} Orang
-                                        </option>
-                                        @endfor
-                                    </select>
+                                    <input type="number" name="people" class="form-control-custom"
+                                           placeholder="cth. 5"
+                                           min="{{ $package['min_person'] }}"
+                                           max="100"
+                                           value="{{ old('people') }}"
+                                           inputmode="numeric"
+                                           required>
                                 </div>
+                                <p style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;margin-bottom:0">
+                                    <i class="bi bi-info-circle me-1"></i>Min. {{ $package['min_person'] }} orang, maks. 100 orang
+                                </p>
                                 @error('people')<p style="color:red;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>@enderror
                             </div>
                         </div>
@@ -300,7 +316,7 @@ function formatRupiah(num) {
 }
 
 function updateSummary() {
-    const people = parseInt(document.querySelector('select[name="people"]').value) || 0;
+    const people = parseInt(document.querySelector('input[name="people"]').value) || 0;
 
     if (people > 0) {
         const total = pricePerPerson * people;
@@ -314,7 +330,36 @@ function updateSummary() {
     }
 }
 
-document.querySelector('select[name="people"]').addEventListener('change', updateSummary);
+document.querySelector('input[name="people"]').addEventListener('input', updateSummary);
 updateSummary();
+
+// ── Phone: izinkan angka dan '+' di posisi pertama saja ──
+const waInput = document.getElementById('whatsappInput');
+waInput.addEventListener('keydown', function(e) {
+    const allowed = ['Backspace','Delete','Tab','ArrowLeft','ArrowRight','Home','End'];
+    if (allowed.includes(e.key)) return;
+    // Izinkan '+' hanya di posisi 0 dan belum ada '+'
+    if (e.key === '+' && this.selectionStart === 0 && !this.value.includes('+')) return;
+    if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+});
+waInput.addEventListener('paste', function(e) {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text').trim();
+    if (text.startsWith('+')) {
+        // Pertahankan '+', strip karakter non-digit setelahnya
+        this.value = '+' + text.slice(1).replace(/\D/g, '').slice(0, 15);
+    } else {
+        this.value = text.replace(/\D/g, '').slice(0, 16);
+    }
+});
+waInput.addEventListener('input', function() {
+    const val = this.value;
+    if (val.startsWith('+')) {
+        // Jaga '+' di depan, hapus non-digit setelahnya
+        this.value = '+' + val.slice(1).replace(/\D/g, '').slice(0, 15);
+    } else {
+        this.value = val.replace(/\D/g, '').slice(0, 16);
+    }
+});
 </script>
 @endsection

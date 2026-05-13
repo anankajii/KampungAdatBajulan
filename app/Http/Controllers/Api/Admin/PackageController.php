@@ -16,7 +16,7 @@ class PackageController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Berhasil mengambil semua paket',
-            'data' => $packages,QQQQQQQQQQQQQQQQQQQQ
+            'data' => $packages,
         ]);
     }
 
@@ -109,7 +109,7 @@ class PackageController extends Controller
             $image->delete();
         }
 
-        $package->forceDelete();
+        $package->delete();
 
         return response()->json([
             'success' => true,
