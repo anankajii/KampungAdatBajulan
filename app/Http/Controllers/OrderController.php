@@ -54,6 +54,7 @@ class OrderController extends Controller
 
             $booking = Booking::create([
                 'package_id'       => $pkg->id,
+                'event_id'         => $request->event_id ?: null,
                 'guest_name'       => $request->name,
                 'guest_phone'      => $request->whatsapp,
                 'visit_date'       => $request->date,

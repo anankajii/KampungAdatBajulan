@@ -34,11 +34,6 @@ class MidtransService
             'phone'      => $booking->guest_phone,
         ];
 
-        // Hanya kirim email kalau ada dan valid
-        if (!empty($booking->guest_email) && filter_var($booking->guest_email, FILTER_VALIDATE_EMAIL)) {
-            $customerDetails['email'] = $booking->guest_email;
-        }
-
         $params = [
             'transaction_details' => [
                 'order_id'     => $booking->booking_code,

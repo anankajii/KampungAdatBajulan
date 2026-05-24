@@ -48,14 +48,14 @@
                         </button>
                     @elseif($ev->package_id && $pkgActive)
                         {{-- Paket aktif — langsung ke form order --}}
-                        <a href="{{ route('orders.create', ['package' => $ev->package_id, 'date' => $ev->event_date]) }}"
+                        <a href="{{ route('orders.create', ['package' => $ev->package_id, 'date' => $ev->event_date, 'event' => $ev->id]) }}"
                            class="btn-join">Join Now</a>
                     @else
                         {{-- Tidak ada paket — ke halaman paket --}}
                         <a href="{{ route('packages') }}" class="btn-join">Join Now</a>
                     @endif
                 @elseif($ev->status === 'upcoming')
-                    {{-- Belum berlangsung — tampilkan badge saja --}}
+                    {{-- Belum berlangsung --}}
                     <span style="
                         font-size:0.75rem;
                         font-weight:600;
@@ -68,7 +68,7 @@
                         <i class="bi bi-clock me-1"></i>Segera
                     </span>
                 @else
-                    {{-- Done / Cancelled — tidak tampilkan tombol --}}
+                    {{-- Done / Cancelled  --}}
                     <span style="font-size:0.75rem;color:var(--text-muted)">
                         {{ $ev->status === 'done' ? 'Selesai' : 'Dibatalkan' }}
                     </span>

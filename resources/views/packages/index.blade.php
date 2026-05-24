@@ -256,7 +256,7 @@
             <div class="d-flex flex-wrap gap-3">
                 <a href="{{ url('/#contact') }}" class="btn-enquire">Hubungi Kami</a>
                 <a href="{{ asset('images/Kampung-Adat-Bajulan-Brochure.png') }}" 
-                   class="btn-download" target="_blank" rel="noopener" download="Brosur-Kampung-Adat-Bajulan.png">
+                   class="btn-download" id="btnUnduhBrosur" target="_blank" rel="noopener" download="Brosur-Kampung-Adat-Bajulan.png">
                     <i class="bi bi-download me-1"></i>Unduh Brosur
                 </a>
             </div>
@@ -280,6 +280,48 @@ requestAnimationFrame(() => {
         });
     }, { threshold: 0.10 });
     fadeEls.forEach(el => io.observe(el));
+});
+
+// ── Notifikasi unduh brosur ──
+document.getElementById('btnUnduhBrosur').addEventListener('click', function () {
+    // Buat toast
+    var toast = document.createElement('div');
+    toast.innerHTML = '<i class="bi bi-arrow-down-circle-fill me-2"></i>Sedang mengunduh brosur...';
+    toast.style.cssText = [
+        'position:fixed',
+        'bottom:5rem',
+        'left:50%',
+        'transform:translateX(-50%) translateY(20px)',
+        'background:#1e3a1e',
+        'color:#fff',
+        'padding:0.75rem 1.4rem',
+        'border-radius:50px',
+        'font-size:0.88rem',
+        'font-weight:600',
+        'box-shadow:0 8px 24px rgba(0,0,0,0.2)',
+        'z-index:99999',
+        'opacity:0',
+        'transition:opacity 0.3s ease, transform 0.3s ease',
+        'white-space:nowrap',
+        'pointer-events:none',
+    ].join(';');
+
+    document.body.appendChild(toast);
+
+    // Fade in
+    requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+        });
+    });
+
+    // Fade out setelah 3 detik
+    setTimeout(function () {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(20px)';
+        setTimeout(function () { toast.remove(); }, 350);
+    }, 3000);
 });
 </script>
 @endsection

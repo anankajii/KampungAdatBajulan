@@ -12,10 +12,19 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+    overscroll-behavior: none;
+    touch-action: pan-y; /* izinkan scroll vertikal, blokir pinch-zoom & pan horizontal */
+}
+
 body {
     font-family: 'Inter', sans-serif;
     color: var(--text-dark);
     background: var(--cream);
+    overscroll-behavior: none;
+    overflow-x: clip;
+    max-width: 100vw;
+    touch-action: pan-y;
 }
 
 h1, h2, h3, h4, h5, .brand-font {
@@ -485,3 +494,24 @@ footer .footer-heading { color: #fff; font-family: 'Playfair Display', serif; fo
 .fade-up { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s ease; }
 .no-js-fade .fade-up { opacity: 0; transform: translateY(28px); }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── GALLERY BROKEN IMAGE ── */
+.gallery-item.img-broken {
+    background: var(--cream-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.gallery-item.img-broken::after {
+    content: '\F4A3';
+    font-family: 'bootstrap-icons';
+    font-size: 2rem;
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+.gallery-item.img-broken img {
+    display: none;
+}
+.gallery-item.img-broken .gallery-overlay {
+    display: none;
+}

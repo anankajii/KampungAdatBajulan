@@ -172,6 +172,7 @@
                 <form action="{{ route('orders.store') }}" method="POST" id="bookingForm">
                     @csrf
                     <input type="hidden" name="package_id" value="{{ $package['id'] }}">
+                    <input type="hidden" name="event_id" value="{{ request('event') }}">
 
                     @error('general')
                     <div style="background:#fce4ec;border:1.5px solid #e57373;border-radius:10px;padding:0.8rem 1rem;margin-bottom:1.2rem;font-size:0.88rem;color:#c62828;">

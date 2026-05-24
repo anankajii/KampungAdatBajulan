@@ -115,7 +115,7 @@
             },
             onPending: function(result) {
                 window.location.href = '/booking/status?code={{ $bookingCode }}&status=pending';
-            },
+            },]\
             onError: function(result) {
                 window.location.href = '/booking/status?code={{ $bookingCode }}&status=error';
             },

@@ -46,14 +46,11 @@ class BookingController extends Controller
                 'package_id' => $package->id,
                 'guest_name' => $request->guest_name,
                 'guest_phone' => $request->guest_phone,
-                'guest_email' => $request->guest_email,
-                'guest_address' => $request->guest_address,
                 'visit_date' => $request->visit_date,
                 'total_person' => $request->total_person,
                 'price_per_person' => $package->price_per_person,
                 'total_price' => $totalPrice,
                 'status' => 'pending',
-                'notes' => $request->notes,
             ]);
 
             // Create midtrans payment

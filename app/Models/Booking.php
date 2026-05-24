@@ -16,14 +16,11 @@ class Booking extends Model
         'event_id',
         'guest_name',
         'guest_phone',
-        'guest_email',
-        'guest_address',
         'visit_date',
         'total_person',
         'price_per_person',
         'total_price',
         'status',
-        'notes',
     ];
 
     protected static function boot()

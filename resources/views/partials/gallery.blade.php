@@ -32,7 +32,8 @@
                      onclick="openLightbox(this)">
                     <img src="{{ $item->full_url }}"
                          alt="{{ $item->caption ?? $item->title }}"
-                         loading="lazy">
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='';this.closest('.gallery-item').classList.add('img-broken');">
                     <div class="gallery-overlay"><i class="bi bi-zoom-in"></i></div>
                 </div>
                 @endforeach
